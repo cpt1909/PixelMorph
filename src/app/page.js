@@ -4,12 +4,12 @@ import Loader from './components/Loader'
 import './globals.css'
 
 export default function Home() {
-  const apiUrl = "https://imageprocessingserver.onrender.com";
-  // const apiUrl = "http://127.0.0.1:8000";
+  const apiUrl = "https://imageprocessingserver.onrender.com/imageProcessing";
+  // const apiUrl = "http://127.0.0.1:8000/imageProcessing";
 
   const checkStatus = async () => {
     try{
-      const response = await fetch(`${apiUrl}/imageProcessing`)
+      const response = await fetch(`${apiUrl}`)
       setServerStatus("Online");
     }catch(error){
       setServerStatus("Offline");
@@ -22,12 +22,9 @@ export default function Home() {
 
   const [disable, setDisable] = useState(false);
 
-  const [base64String, setBase64String] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
   const [processedImage, setProcessedImage] = useState(null);
-
-  const [imageWidth, setImageWidth] = useState(null);
-  const [imageHeight, setImageHeight] = useState(null);
 
   const [resizeOption, setResizeOption] = useState(false);
   let imageResizeWidth = null;
@@ -39,28 +36,22 @@ export default function Home() {
   const imagePreview = (e) => {
     setProcessedImage(false);
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      const img = new Image();
-
-      reader.onloadend = () => {
-        const base64 = reader.result.split(',')[1];
-        setBase64String(base64);
-        setPreviewImage(reader.result);
-      };
-
-      reader.onload = (e) => {
-        img.src = e.target.result;
-      };
-
-      img.onload = () => {
-        setImageWidth(img.width);
-        setImageHeight(img.height);
-      };
-
-      reader.readAsDataURL(file)
+    if (file){
+      const fileSize = file.size;
+      if (fileSize > 10485760){
+        alert("File Size Limit Exceeded !!");
+      }else{
+        setImageFile(file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreviewImage(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    }else{
+      alert("Select an Image !!");
     }
-  };
+  }
 
   const fetchOutput = async () => {
     setProcessedImage(null);
@@ -71,35 +62,40 @@ export default function Home() {
 
     const choice = document.getElementById("imageProcess").value;
 
-    if (base64String){
+    if (imageFile){
       try{
         setLoading(true);
-        const response = await fetch(`${apiUrl}/imageProcessing`,
+
+        const dim = {
+          width: imageResizeWidth,
+          height: imageResizeHeight,
+        };
+
+        const formData = new FormData();
+        formData.append("image", imageFile);
+        formData.append("dim", JSON.stringify(dim));
+        formData.append("choice", choice)
+
+        const response = await fetch(`${apiUrl}`,
           {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              'image': base64String,
-              'choice': choice,
-              'dim': {
-                'width': imageResizeWidth,
-                'height': imageResizeHeight,
-              }
-            })
+            body: formData,
           });
+
         setServerStatus("Online");
-        const e = await response.json();
-        if (response.status == 200){
-          setProcessedImage(e.output);
+
+        if (response.status == 200) {
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          setProcessedImage(url);
           setLoading(false);
         }else{
+          alert("Client Error : Invalid Request")
           setLoading(false);
-          alert(`${e.message}`)
         }
+
       }catch(error){
-        alert("Server Error : Couldn't connect to server !!");
+        alert("Server Error : Couldn't connect to Server !!");
         setServerStatus("Offline");
         setLoading(false);
       }
@@ -118,8 +114,8 @@ export default function Home() {
       )}
       
       <div className="header">
-        <h1>Image Processing Tool</h1>
-        <p>( File Size Limit : 10 MB )</p>
+        <h1>PixelMorph</h1>
+        <p>Redefine Your Images</p>
       </div>
       
       <hr/>
@@ -134,8 +130,8 @@ export default function Home() {
               accept="image/*"
               onChange={imagePreview}
               required
-            ></input>
-
+            ></input>     
+            <p style={{textAlign: "center"}}>( File Size Limit : 10 MB )</p>            
             <select
               id="imageProcess"
               name="imageProcess"
@@ -212,7 +208,7 @@ export default function Home() {
       </div>
       
       <div className="fileDisplay">
-        {base64String && (
+        {previewImage && (
           <div>
           <p>Image Preview</p>
           <img
@@ -232,7 +228,7 @@ export default function Home() {
           <div>
             <p>Output Image</p>
             <img
-              src={`data:image/png;base64,${processedImage}`}
+              src={processedImage}
               alt="Processed Image"
               style={{
                 minWidth: "100px",
@@ -265,7 +261,7 @@ export default function Home() {
           </p>
       </div>
       <div className="footer">
-        <p style={{textAlign: "center"}}><a href="https://github.com/cpt2004/imageprocessingtools">Visit GitHub Repo</a> for more details</p>
+        <p style={{textAlign: "center"}}>For more details, <a href="https://github.com/cpt2004/imageprocessingtools">Visit GitHub Repo</a></p>
       </div>
     </div>
   )};

@@ -13,9 +13,6 @@ html, body{
   align-items: center;
   row-gap: 20px;
   height: 100%;
-  h1, p{
-    margin: 0;
-  }
 }
 
 .loadingOverlay{
@@ -35,6 +32,7 @@ html, body{
 .header > *{
   width: 100%;
   text-align: center;
+  margin: 5px 0 5px 0;
 }
 
 hr{
