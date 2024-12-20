@@ -4,7 +4,7 @@ import Loader from './components/Loader'
 import './globals.css'
 
 export default function Home() {
-  const apiUrl = "https://imageprocessingapi-kijs.onrender.com";
+  const apiUrl = "https://imageprocessingserver.onrender.com/";
   // const apiUrl = "http://127.0.0.1:8000";
 
   const checkStatus = async () => {
@@ -157,7 +157,7 @@ export default function Home() {
               <option value={5}>Cartoon Filter</option>
               <option value={6}>Apply Sepia</option>
               <option value={7}>Reduce Noise</option>
-              <option value={8}>Object Detection</option>
+              <option value={8} disabled>Object Detection (Beta)</option>
             </select>
 
             <div>
