@@ -7,6 +7,19 @@ export default function Home() {
   const apiUrl = "https://imageprocessingapi-kijs.onrender.com";
   // const apiUrl = "http://127.0.0.1:8000";
 
+  const checkStatus = async () => {
+    try{
+      const response = await fetch(`${apiUrl}/imageProcessing`)
+      setServerStatus("Online");
+    }catch(error){
+      setServerStatus("Offline");
+    }
+  }
+
+  useEffect(() => {
+    checkStatus();
+  },[]);
+
   const [disable, setDisable] = useState(false);
 
   const [base64String, setBase64String] = useState(null);
@@ -16,11 +29,12 @@ export default function Home() {
   const [imageWidth, setImageWidth] = useState(null);
   const [imageHeight, setImageHeight] = useState(null);
 
-  const [resizeOption, setResizeOption] = useState(false)
+  const [resizeOption, setResizeOption] = useState(false);
   let imageResizeWidth = null;
   let imageResizeHeight = null;
 
   const [loading, setLoading] = useState(false);
+  const [serverStatus, setServerStatus] = useState("Loading");
   
   const imagePreview = (e) => {
     setProcessedImage(false);
@@ -58,35 +72,41 @@ export default function Home() {
     const choice = document.getElementById("imageProcess").value;
 
     if (base64String){
-      setLoading(true);
-      const response = await fetch(`${apiUrl}/imageProcessing`,
-                  {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      'image': base64String,
-                      'choice': choice,
-                      'dim': {
-                        'width': imageResizeWidth,
-                        'height': imageResizeHeight,
-                      }
-                    })
-                  });
-    const e = await response.json();
-    if (response.status == 200){
-      setProcessedImage(e.output);
-      setLoading(false);
+      try{
+        setLoading(true);
+        const response = await fetch(`${apiUrl}/imageProcessing`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              'image': base64String,
+              'choice': choice,
+              'dim': {
+                'width': imageResizeWidth,
+                'height': imageResizeHeight,
+              }
+            })
+          });
+        setServerStatus("Online");
+        const e = await response.json();
+        if (response.status == 200){
+          setProcessedImage(e.output);
+          setLoading(false);
+        }else{
+          setLoading(false);
+          alert(`${e.message}`)
+        }
+      }catch(error){
+        alert("Server Error : Couldn't connect to server !!");
+        setServerStatus("Offline");
+        setLoading(false);
+      }
     }else{
-      setLoading(false);
-      alert(`${e.message}`)
+        alert("Select an Image !!");
+      }
     }
-    
-    }else{
-      alert("Select an Image !!");
-    }
-  }
 
   return (
     <div className="main">
@@ -137,7 +157,7 @@ export default function Home() {
               <option value={5}>Cartoon Filter</option>
               <option value={6}>Apply Sepia</option>
               <option value={7}>Reduce Noise</option>
-              <option value={8}>Object Detection (Beta)</option>
+              <option value={8}>Object Detection</option>
             </select>
 
             <div>
@@ -234,10 +254,18 @@ export default function Home() {
           </a>
         )}
       </div>
+      <div className="serverStatus">
+        <p>Server Status :
+          {(serverStatus === "Loading") ? (
+            <strong style={{color: "orange"}}> {serverStatus} </strong>) : (
+              serverStatus === "Online") ? (
+                <strong style={{color: "green"}}> {serverStatus} </strong> ) : (
+                  <strong style={{color: "red"}}> {serverStatus} </strong>
+          )}
+          </p>
+      </div>
       <div className="footer">
-        {processedImage && (
-          <hr/>
-        )}
+        <p style={{textAlign: "center"}}><a href="https://github.com/cpt2004/imageprocessingtools">Visit GitHub Repo</a> for more details</p>
       </div>
     </div>
   )};
