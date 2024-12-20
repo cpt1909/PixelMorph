@@ -243,7 +243,7 @@ export default function Home() {
       <div>
         {processedImage && (
           <a 
-            href={`data:image/png;base64,${processedImage}`}
+            href={`${processedImage}`}
             download={"processed_image.jpg"}
           >
             <button type="button">Download Output</button>
