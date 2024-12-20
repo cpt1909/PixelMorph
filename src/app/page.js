@@ -4,7 +4,7 @@ import Loader from './components/Loader'
 import './globals.css'
 
 export default function Home() {
-  const apiUrl = "https://imageprocessingserver.onrender.com/";
+  const apiUrl = "https://imageprocessingserver.onrender.com";
   // const apiUrl = "http://127.0.0.1:8000";
 
   const checkStatus = async () => {
