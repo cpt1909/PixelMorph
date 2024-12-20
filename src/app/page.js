@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Loader from './components/Loader'
 import './globals.css'
 
 export default function Home() {
-  const apiUrl = "https://imageprocessingapi-kijs.onrender.com"
+  const apiUrl = "https://imageprocessingapi-kijs.onrender.com";
+  // const apiUrl = "http://127.0.0.1:8000";
 
   const [disable, setDisable] = useState(false);
 
@@ -29,7 +30,7 @@ export default function Home() {
       const img = new Image();
 
       reader.onloadend = () => {
-        const base64 = reader.result.split(',')[1]
+        const base64 = reader.result.split(',')[1];
         setBase64String(base64);
         setPreviewImage(reader.result);
       };
@@ -89,6 +90,13 @@ export default function Home() {
 
   return (
     <div className="main">
+      {loading && (
+        <div className="loadingOverlay">
+          <Loader/>
+          <p>Please Wait ...</p>
+        </div>
+      )}
+      
       <div className="header">
         <h1>Image Processing Tool</h1>
         <p>( File Size Limit : 10 MB )</p>
@@ -146,6 +154,7 @@ export default function Home() {
                         type="number"
                         id="imageWidth"
                         name="imageWidth"
+                        placeholder={previewImage && (` pixels (px) `)}
                         // placeholder={previewImage && (`${imageWidth/10} - ${imageWidth}`)}
                         // min={imageWidth/10}
                         // max={imageWidth}
@@ -163,6 +172,7 @@ export default function Home() {
                         type="number"
                         id="imageHeight"
                         name="imageHeight"
+                        placeholder={previewImage && (` pixels (px) `)}
                         // placeholder={previewImage && (`${imageHeight/10} - ${imageHeight}`)}
                         // min={imageHeight/10}
                         // max={imageHeight}
@@ -198,11 +208,7 @@ export default function Home() {
           </div>
         )}
 
-          {loading && (
-            <Loader/>
-          )}
-
-          {processedImage && (
+        {processedImage && (
           <div>
             <p>Output Image</p>
             <img
@@ -216,7 +222,7 @@ export default function Home() {
               }}
             />
           </div>
-          )}
+        )}
       </div>
       <div>
         {processedImage && (
@@ -226,6 +232,11 @@ export default function Home() {
           >
             <button type="button">Download Output</button>
           </a>
+        )}
+      </div>
+      <div className="footer">
+        {processedImage && (
+          <hr/>
         )}
       </div>
     </div>
