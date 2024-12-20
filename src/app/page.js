@@ -137,7 +137,7 @@ export default function Home() {
               <option value={5}>Cartoon Filter</option>
               <option value={6}>Apply Sepia</option>
               <option value={7}>Reduce Noise</option>
-              <option value={8} disabled>Object Detection (Beta)</option>
+              <option value={8}>Object Detection (Beta)</option>
             </select>
 
             <div>
