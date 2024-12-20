@@ -1,9 +1,7 @@
 
-# PixelMorph - Redefine Your Images         
-
-SERVER STATUS : 🟢 ONLINE
-<!--SERVER STATUS : 🔴 OFFLINE-->
-##
+# PixelMorph - Redefine Your Images
+## SERVER STATUS : 🟢 ONLINE
+<!-- ## SERVER STATUS : 🔴 OFFLINE-->
 
 PixelMorph is a simple yet powerful web-based image processing tool built with Next.js. This tool allows users to upload an image and apply various transformations including face detection, grayscale conversion, image resizing, pencil sketch effects, cartoon filters, sepia filters, and noise reduction. It leverages an API backend to process the image and return the result.
 
