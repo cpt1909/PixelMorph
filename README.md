@@ -54,7 +54,7 @@ http://localhost:3000
 
 ## Tech Stack
 1. Frontend: React.js (Next.js)
-2. Backend API: Custom [Image Processing Server](https://github.com/cpt2004/imageProcessingServer) built on Python Django
+2. Backend API: Custom [Image Processing Server](https://github.com/cpt1909/imageProcessingServer) built on Python Django
 4. Deployment: Render (for backend API), Vercel (for frontend)
 3. Styling: CSS (global styles)
 
