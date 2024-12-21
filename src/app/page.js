@@ -133,7 +133,7 @@ export default function Home() {
             <label htmlFor="fileInput">
             <div className="fileInputArea">
               <img
-                src={previewImage || "upload.svg"}
+                src={previewImage || "file-plus.svg"}
                 style={{
                   minWidth: "100px",
                   maxWidth: "250px",
@@ -196,7 +196,7 @@ export default function Home() {
             <button
               id="fileUpload"
               type="submit"
-            ><img src="upload-light.svg" width={"20px"} height={"20px"}></img> Upload</button>
+            ><img src="upload-light.svg" width={"20px"} height={"20px"}></img>Upload Image</button>
         </form>
       </div>
 
