@@ -6,13 +6,13 @@
 PixelMorph is a simple yet powerful web-based image processing tool built with Next.js. This tool allows users to upload an image and apply various transformations including face detection, grayscale conversion, image resizing, pencil sketch effects, cartoon filters, sepia filters, and noise reduction. It leverages an API backend to process the image and return the result.
 
 ## Features
-1. Face Detection: Detects human faces in the image and highlights them.
-2. Grayscale Conversion: Converts the uploaded image into black and white.
-3. Image Resizing: Allows users to resize their images by specifying width and height (in pixels).
-4. Pencil Sketch: Converts the image into a pencil sketch effect.
-5. Cartoon Filter: Applies a cartoon-like effect to the image.
-6. Sepia Filter: Applies a sepia tone to give images a vintage look.
-7. Noise Reduction: Reduces noise in the uploaded image for better clarity.
+1. Grayscale Filter: Converts the uploaded image into black and white.
+2. Image Resizing: Allows users to resize their images by specifying width and height (in pixels).
+3. Pencil Sketch Filter: Converts the image into a pencil sketch effect.
+4. Cartoon Filter: Applies a cartoon-like effect to the image.
+5. Sepia Filter: Applies a sepia tone to give images a vintage look.
+6. Noise Reduction: Reduces noise in the uploaded image for better clarity.
+7. Face Detection: Detects human faces in the image and highlights them.
 8. Object Detection (Beta): Detects multiple classes of objects in the image (Temporarily suspended due to insufficient compute).
 
 ## Local Deployment
