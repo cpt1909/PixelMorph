@@ -114,8 +114,8 @@ export default function Home() {
       )}
       
       <div className="header">
-        <h1>PixelMorph</h1>
-        <p>Redefine Your Images</p>
+        <img src="logo-crop.png" style={{width: "250px", margin: "10px 0 0 0"}}></img>
+        <p style={{margin: 0}}>Redefine Your Images</p>
       </div>
       
       <hr/>
@@ -146,13 +146,13 @@ export default function Home() {
               }}
               required>
               <option value="" disabled={disable} required>--Select--</option>
-              <option value={1}>Face Detection</option>
-              <option value={2}>Grayscale Image</option>
+              <option value={2}>Grayscale Filter</option>
               <option value={3}>Resize Image</option>
-              <option value={4}>Pencil Sketch</option>
+              <option value={4}>Pencil Sketch Filter</option>
               <option value={5}>Cartoon Filter</option>
-              <option value={6}>Apply Sepia</option>
+              <option value={6}>Sepia Filter</option>
               <option value={7}>Reduce Noise</option>
+              <option value={1}>Face Detection</option>
               <option value={8} disabled>Object Detection (Beta)</option>
             </select>
 
