@@ -31,7 +31,7 @@ export default function Home() {
   let imageResizeHeight = null;
 
   const [loading, setLoading] = useState(false);
-  const [serverStatus, setServerStatus] = useState("Loading");
+  const [serverStatus, setServerStatus] = useState("Connecting");
   
   const imagePreview = (e) => {
     setProcessedImage(false);
@@ -252,7 +252,7 @@ export default function Home() {
       </div>
       <div className="serverStatus">
         <p>Server Status :
-          {(serverStatus === "Loading") ? (
+          {(serverStatus === "Connecting") ? (
             <strong style={{color: "orange"}}> {serverStatus} </strong>) : (
               serverStatus === "Online") ? (
                 <strong style={{color: "green"}}> {serverStatus} </strong> ) : (
