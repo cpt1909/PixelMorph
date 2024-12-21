@@ -34,7 +34,7 @@ export default function Home() {
   const [serverStatus, setServerStatus] = useState("Connecting");
   
   const imagePreview = (e) => {
-    setProcessedImage(false);
+    setProcessedImage(null);
     const file = e.target.files[0];
     if (file){
       const fileSize = file.size;
@@ -48,8 +48,6 @@ export default function Home() {
         };
         reader.readAsDataURL(file);
       }
-    }else{
-      alert("Select an Image !!");
     }
   }
 
@@ -62,7 +60,7 @@ export default function Home() {
 
     const choice = document.getElementById("imageProcess").value;
 
-    if (imageFile){
+    if (choice && imageFile){
       try{
         setLoading(true);
 
@@ -99,10 +97,12 @@ export default function Home() {
         setServerStatus("Offline");
         setLoading(false);
       }
+    }else if(!imageFile){
+      alert("Select an Image !!");
     }else{
-        alert("Select an Image !!");
-      }
+      alert("Choose an option");
     }
+  }
 
   return (
     <div className="main">
@@ -117,8 +117,6 @@ export default function Home() {
         <img src="logo-crop.png" style={{width: "250px", margin: "10px 0 0 0"}}></img>
         <p style={{margin: 0}}>Redefine Your Images</p>
       </div>
-      
-      <hr/>
 
       <div className="form">
         <form onSubmit={(event) => {
@@ -126,12 +124,26 @@ export default function Home() {
           fetchOutput()
         }}>
             <input
+              id="fileInput"
+              name="fileInput"
               type="file"
               accept="image/*"
               onChange={imagePreview}
-              required
-            ></input>     
-            <p style={{textAlign: "center"}}>( File Size Limit : 10 MB )</p>            
+            ></input>
+            <label htmlFor="fileInput">
+            <div className="fileInputArea">
+              <img
+                src={previewImage || "upload.svg"}
+                style={{
+                  minWidth: "100px",
+                  maxWidth: "250px",
+                  maxHeight: "300px",
+                }}></img>
+              <p>{previewImage ? "Image Preview" : "Select File"}</p>
+              {previewImage && <p>(Click Again to Change Image)</p>}
+              </div>
+            </label>
+            <p style={{textAlign: "center"}}>File Size Limit : 10 MB</p>            
             <select
               id="imageProcess"
               name="imageProcess"
@@ -144,8 +156,8 @@ export default function Home() {
                   setResizeOption(false);
                 }
               }}
-              required>
-              <option value="" disabled={disable} required>--Select--</option>
+              >
+              <option value="" disabled={disable} required>-- Select Option --</option>
               <option value={2}>Grayscale Filter</option>
               <option value={3}>Resize Image</option>
               <option value={4}>Pencil Sketch Filter</option>
@@ -156,97 +168,61 @@ export default function Home() {
               <option value={8} disabled>Object Detection (Beta)</option>
             </select>
 
-            <div>
             {resizeOption && (
-              <table>
-                <thead></thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <label htmlFor="imageWidth">Width : </label>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        id="imageWidth"
-                        name="imageWidth"
-                        placeholder={previewImage && (` pixels (px) `)}
-                        // placeholder={previewImage && (`${imageWidth/10} - ${imageWidth}`)}
-                        // min={imageWidth/10}
-                        // max={imageWidth}
-                        step="1"
-                        required
-                      ></input>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <label htmlFor="imageHeight">Height : </label>
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        id="imageHeight"
-                        name="imageHeight"
-                        placeholder={previewImage && (` pixels (px) `)}
-                        // placeholder={previewImage && (`${imageHeight/10} - ${imageHeight}`)}
-                        // min={imageHeight/10}
-                        // max={imageHeight}
-                        step="1"
-                        required
-                      ></input>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>                
-            )}
+            <div className="resizeField">
+              <label htmlFor="imageWidth">Width : &nbsp;
+              <input
+                type="number"
+                id="imageWidth"
+                name="imageWidth"
+                min={1}
+                step="1"
+                required
+              ></input>
+              &nbsp; px </label>
+        
+              <label htmlFor="imageHeight">Height : &nbsp;
+              <input
+                type="number"
+                id="imageHeight"
+                name="imageHeight"
+                min={1}
+                step="1"
+                required
+              ></input>
+              &nbsp; px</label>
             </div>
-            <button 
+            )}
+            <button
+              id="fileUpload"
               type="submit"
-            >Upload</button>
+            ><img src="upload-light.svg" width={"20px"} height={"20px"}></img> Upload</button>
         </form>
       </div>
-      
-      <div className="fileDisplay">
-        {previewImage && (
-          <div>
-          <p>Image Preview</p>
+
+      {processedImage && (
+        <div className="processedImage">
+          <p>Output Image</p>
           <img
-            src={previewImage}
-            alt="Uploaded Image"
+            src={processedImage}
+            alt="Processed Image"
             style={{
               minWidth: "100px",
-              maxWidth: "300px",
-              width: "auto",
-              height: "auto",
+              maxWidth: "250px",
             }}
-            />
-          </div>
-        )}
+          />
+        </div>
+      )}
 
-        {processedImage && (
-          <div>
-            <p>Output Image</p>
-            <img
-              src={processedImage}
-              alt="Processed Image"
-              style={{
-                minWidth: "100px",
-                maxWidth: "300px",
-                width: "auto",
-                height: "auto",
-              }}
-            />
-          </div>
-        )}
-      </div>
       <div>
         {processedImage && (
           <a 
             href={`${processedImage}`}
             download={"processed_image.jpg"}
+            style={{textDecoration: "none"}}
           >
-            <button type="button">Download Output</button>
+            <button type="button" id="fileDownload">
+              <img src="download-light.svg" width={"20px"} height={"20px"}></img>Download Output</button>
           </a>
         )}
       </div>
@@ -258,10 +234,11 @@ export default function Home() {
                 <strong style={{color: "green"}}> {serverStatus} </strong> ) : (
                   <strong style={{color: "red"}}> {serverStatus} </strong>
           )}
-          </p>
+        </p>
       </div>
       <div className="footer">
-        <p style={{textAlign: "center"}}>For more details, <a href="https://github.com/cpt2004/imageprocessingtools">Visit GitHub Repo</a></p>
+        <p>For more details, <a href="https://github.com/cpt2004/imageprocessingtools"  target="_blank">&#9741; Visit GitHub Repo</a></p>
+        <p>Copyright &copy; 2024 Thaarakenth C P</p>
       </div>
     </div>
   )};
