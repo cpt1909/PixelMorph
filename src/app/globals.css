@@ -39,6 +39,15 @@ html, body{
 
 .header, .footer{
   text-align: center;
+  div{
+    margin: 20px 0 10px 0;
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    h1{
+      margin: 0;
+    }
+  }
 }
 
 hr{

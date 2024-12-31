@@ -114,7 +114,11 @@ export default function Home() {
       )}
       
       <div className="header">
-        <img src="logo-crop.png" style={{width: "250px", margin: "10px 0 0 0"}}></img>
+        <div>
+          <img src="favicon.png" style={{width: "40px", height: "40px"}}></img>
+          <h1>PixelMorph</h1>
+        </div>
+        
         <p style={{margin: 0}}>Redefine Your Images</p>
       </div>
 
