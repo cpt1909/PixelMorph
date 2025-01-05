@@ -19,7 +19,7 @@ PixelMorph is a simple yet powerful web-based image processing tool built with N
 1. Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/cpt2004/imageprocessingtools.git
+git clone https://github.com/cpt1909/imageprocessingtools.git
 ```
 
 2. Navigate to the project folder:
